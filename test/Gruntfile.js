@@ -6,7 +6,7 @@ module.exports = function(grunt)
 		{
 			options:
 			{
-				translatefile: 'dest/translate_data.json'
+				translatefile: 'tmp/translate_data.json'
 			},
 			test:
 			{
