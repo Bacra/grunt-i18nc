@@ -59,19 +59,21 @@ module.exports = function(grunt)
 			specialWords = grunt.util._.uniq(specialWords.concat(info.specialWords));
 
 			grunt.file.write(oldfile, info.code);
-		});
 
-		if (translatefile)
-		{
-			var keys = {};
-			specialWords.forEach(function(key)
+			// 保存数据，每次处理完都保存
+			// 避免报错导致数据丢失
+			if (translatefile)
 			{
-				keys[key] = '';
-			});
+				var keys = {};
+				specialWords.forEach(function(key)
+				{
+					keys[key] = '';
+				});
 
-			translateTaskAllData.default_json = grunt.util._.extend(keys, translateTaskAllData.default_json);
+				translateTaskAllData.default_json = grunt.util._.extend(keys, translateTaskAllData.default_json);
 
-			grunt.file.write(translatefile, JSON.stringify(translateAllData, null, '\t'));
-		}
+				grunt.file.write(translatefile, JSON.stringify(translateAllData, null, '\t'));
+			}
+		});
 	});
 };
