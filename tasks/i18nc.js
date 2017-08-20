@@ -1,5 +1,5 @@
 var i18nc = require('i18nc');
-
+var extend = require('extend');
 
 module.exports = function(grunt)
 {
@@ -7,35 +7,37 @@ module.exports = function(grunt)
 	{
 		var self = this;
 		var options = self.options();
-		var translatefile = options.translatefile;
+		var translateFile = options.translateFile;
 
 		var translateData = {};
 		var translateAllData;
-		var translateTaskAllData
-		if (translatefile && grunt.file.isFile(translatefile))
+		var translateTaskAllData;
+		if (translateFile && grunt.file.isFile(translateFile))
 		{
 			try {
-				translateAllData = grunt.file.readJSON(translatefile);
+				translateAllData = grunt.file.readJSON(translateFile);
 			}
 			catch(err)
 			{
-				grunt.file.copy(translatefile, translatefile+'.bak_'+self.target);
-				grunt.log.warn('read translatefile err: '.red + translatefile);
+				grunt.file.copy(translateFile, translateFile+'.bak_'+self.target);
+				grunt.log.warn('read translateFile err: '.red + translateFile);
 			}
 		}
 
-		if (!translateAllData || typeof translateAllData != 'object')
-		{
-			translateAllData = {};
-			translateTaskAllData = (translateAllData[self.target] = {});
-		}
-		else
-		{
-			translateTaskAllData = translateAllData[self.target]
-				|| (translateAllData[self.target] = {});
-		}
+		translateAllData = extend(true, {}, options.translateData, translateAllData);
 
-		var specialWords = [];
+		translateTaskAllData = translateAllData[self.target]
+			|| (translateAllData[self.target] = {});
+
+		translateTaskAllData = extend(true, {}, translateAllData['<all tasks>'], translateTaskAllData);
+
+		if (!grunt.i18nc) grunt.i18nc = {};
+		if (!grunt.i18nc.translateWords) grunt.i18nc.translateWords = {};
+
+		var translateWordsOutput
+			= grunt.i18nc.translateWords[self.target]
+			= (grunt.i18nc.translateWords[self.target] = {});
+
 		self.files.forEach(function(file)
 		{
 			var newfile = file.src[0];
@@ -47,7 +49,7 @@ module.exports = function(grunt)
 			var opts = grunt.util._.extend(options,
 					{
 						defaultFilekey: newfile,
-						translateAllData: translateTaskAllData,
+						dbTranslateWords: translateTaskAllData,
 					});
 
 			var info = i18nc(content, opts);
@@ -56,24 +58,20 @@ module.exports = function(grunt)
 			{
 				grunt.log.warn('Dirty words call I18N Function:\n  '+info.dirtyWords.join('  \n'));
 			}
-			specialWords = grunt.util._.uniq(specialWords.concat(info.specialWords));
 
 			grunt.file.write(oldfile, info.code);
-
-			// 保存数据，每次处理完都保存
-			// 避免报错导致数据丢失
-			if (translatefile)
+			translateWordsOutput[newfile] =
 			{
-				var keys = {};
-				specialWords.forEach(function(key)
-				{
-					keys[key] = '';
-				});
-
-				translateTaskAllData.default_json = grunt.util._.extend(keys, translateTaskAllData.default_json);
-
-				grunt.file.write(translatefile, JSON.stringify(translateAllData, null, '\t'));
-			}
+				funcTranslateWords	: info.funcTranslateWords,
+				codeTranslateWords	: info.codeTranslateWords,
+				usedTranslateWords	: info.usedTranslateWords,
+			};
 		});
+
+
+		if (options.translateOutputFile)
+		{
+			grunt.file.write(options.translateOutputFile, JSON.stringify(translateWordsOutput, null, '\t'));
+		}
 	});
 };
