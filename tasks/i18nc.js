@@ -85,6 +85,8 @@ module.exports = function(grunt)
 			}
 
 			grunt.file.write(destfile, info.code);
+
+
 			translateWordsOutput[srcfile] =
 			{
 				funcTranslateWords	: info.funcTranslateWords,
@@ -106,7 +108,7 @@ module.exports = function(grunt)
 
 		if (options.translateOutputFile)
 		{
-			grunt.file.write(options.translateOutputFile, JSON.stringify(translateWordsOutput, null, '\t'));
+			grunt.file.write(options.translateOutputFile, JSON.stringify(grunt.i18nc.translateWords, null, '\t'));
 		}
 	});
 };
