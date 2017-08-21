@@ -6,7 +6,10 @@ module.exports = function(grunt)
 	grunt.registerMultiTask('i18nc', 'i18nc', function()
 	{
 		var self = this;
-		var options = self.options();
+		var options = self.options(
+			{
+				isHoldError: true
+			});
 		var translateFile = options.translateFile;
 
 		var translateData = {};
@@ -38,29 +41,51 @@ module.exports = function(grunt)
 			= grunt.i18nc.translateWords[self.target]
 			= (grunt.i18nc.translateWords[self.target] = {});
 
+		var errorArr = [];
+
 		self.files.forEach(function(file)
 		{
-			var newfile = file.src[0];
-			var oldfile = file.dest;
+			var srcfile = file.src[0];
+			var destfile = file.dest;
 
-			if (!grunt.file.isFile(newfile)) return;
+			if (!grunt.file.isFile(srcfile)) return;
 
-			var content = grunt.file.read(newfile);
+			var content = grunt.file.read(srcfile);
 			var opts = grunt.util._.extend(options,
 					{
-						defaultFilekey: newfile,
+						defaultFilekey: srcfile,
 						dbTranslateWords: translateTaskAllData,
 					});
 
-			var info = i18nc(content, opts);
+			try {
+				var info = i18nc(content, opts);
+			}
+			catch(err)
+			{
+				if (options.isHoldError)
+				{
+					grunt.log.error('parse file error:'+srcfile+' err:'+err.message);
+					errorArr.push(
+						{
+							file: srcfile,
+							error: err
+						});
+					return;
+				}
+				else
+				{
+					grunt.log.error('Error File:'+srcfile);
+					throw err;
+				}
+			}
 
 			if (info.dirtyWords.length)
 			{
 				grunt.log.warn('Dirty words call I18N Function:\n  '+info.dirtyWords.join('  \n'));
 			}
 
-			grunt.file.write(oldfile, info.code);
-			translateWordsOutput[newfile] =
+			grunt.file.write(destfile, info.code);
+			translateWordsOutput[srcfile] =
 			{
 				funcTranslateWords	: info.funcTranslateWords,
 				codeTranslateWords	: info.codeTranslateWords,
@@ -68,6 +93,16 @@ module.exports = function(grunt)
 			};
 		});
 
+
+		if (errorArr.length)
+		{
+			grunt.log.error('[Error File List]');
+			errorArr.forEach(function(item)
+			{
+				grunt.log.error('File:'+item.file+'\n Error Message:'+item.error.message);
+			});
+			throw new Error('Some file Is Error');
+		}
 
 		if (options.translateOutputFile)
 		{
