@@ -15,7 +15,7 @@ module.exports = function(grunt)
 		var translateData = {};
 		var translateAllData;
 		var translateTaskAllData;
-		if (translateFile && grunt.file.isFile(translateFile))
+		if (translateFile)
 		{
 			try {
 				translateAllData = grunt.file.readJSON(translateFile);
