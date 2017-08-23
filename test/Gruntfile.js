@@ -6,9 +6,10 @@ module.exports = function(grunt)
 		{
 			options:
 			{
-				translateData: {},
-				translateFile: 'files/translate_data.json',
-				translateOutputFile: 'tmp/translate_output.json',
+				isIgnoreScanWarn	: true,
+				translateData		: {},
+				translateFile		: 'files/translate_data.json',
+				translateOutputFile	: 'tmp/translate_output.json',
 			},
 			test:
 			{

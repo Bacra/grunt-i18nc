@@ -1,45 +1,37 @@
 {
     "<all tasks>":
     {
-        "zh":
+        "en":
         {
             "<allfile>":
             {
                 "DEFAULTS":
                 {
-                    "中文db <allfile>": "indb <allfile>"
+                    "简体": "zh",
+                    "简体1": "zh1"
                 },
                 "SUBTYPES":
                 {
-                    "subtype":
+                    "subtype1":
                     {
-                        "中文 allfile subtype1": "indb <allfile> subtype1",
-                        "中文 thisfile subtype2": "indb <allfile> subtype2"
-                    }
-                }
-            },
-
-
-            "i18n_handler_example":
-            {
-                "DEFAULTS":
-                {
-                    "中文0":
-                    [
-                        "indb <thisfile> db1",
-                        "indb <thisfile> custom",
-                        "indb <thisfile> db2"
-                    ]
-                },
-                "SUBTYPES":
-                {
-                    "subtype":
+                        "简体": "zh subtype1"
+                    },
+                    "subtype2":
                     {
-                        "中文 thisfile subtype2": ["indb <thisfile> subtype2"]
+                        "简体": "zh subtype2"
                     }
                 }
             }
+        },
+        "tw":
+        {
+            "<allfile>":
+            {
+                "DEFAULTS":
+                {
+                    "简体": "簡體"
+                }
+            }
         }
-
     }
 }
