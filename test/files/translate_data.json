@@ -1,36 +1,33 @@
 {
-    "<all tasks>":
+    "en":
     {
-        "en":
+        "<allfile>":
         {
-            "<allfile>":
+            "DEFAULTS":
             {
-                "DEFAULTS":
+                "简体": "zh",
+                "简体1": "zh1"
+            },
+            "SUBTYPES":
+            {
+                "subtype1":
                 {
-                    "简体": "zh",
-                    "简体1": "zh1"
+                    "简体": "zh subtype1"
                 },
-                "SUBTYPES":
+                "subtype2":
                 {
-                    "subtype1":
-                    {
-                        "简体": "zh subtype1"
-                    },
-                    "subtype2":
-                    {
-                        "简体": "zh subtype2"
-                    }
+                    "简体": "zh subtype2"
                 }
             }
-        },
-        "tw":
+        }
+    },
+    "tw":
+    {
+        "<allfile>":
         {
-            "<allfile>":
+            "DEFAULTS":
             {
-                "DEFAULTS":
-                {
-                    "简体": "簡體"
-                }
+                "简体": "簡體"
             }
         }
     }

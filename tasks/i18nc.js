@@ -13,12 +13,11 @@ module.exports = function(grunt)
 		var translateFile = options.translateFile;
 
 		var translateData = {};
-		var translateAllData;
-		var translateTaskAllData;
+		var dbTranslateWords;
 		if (translateFile)
 		{
 			try {
-				translateAllData = grunt.file.readJSON(translateFile);
+				dbTranslateWords = grunt.file.readJSON(translateFile);
 			}
 			catch(err)
 			{
@@ -27,19 +26,13 @@ module.exports = function(grunt)
 			}
 		}
 
-		translateAllData = extend(true, {}, options.translateData, translateAllData);
-
-		translateTaskAllData = translateAllData[self.target]
-			|| (translateAllData[self.target] = {});
-
-		translateTaskAllData = extend(true, {}, translateAllData['<all tasks>'], translateTaskAllData);
+		dbTranslateWords = extend(true, {}, options.translateData, dbTranslateWords);
 
 		if (!grunt.i18nc) grunt.i18nc = {};
-		if (!grunt.i18nc.translateWords) grunt.i18nc.translateWords = {};
 
 		var translateWordsOutput
-			= grunt.i18nc.translateWords[self.target]
-			= (grunt.i18nc.translateWords[self.target] = {});
+			= grunt.i18nc.translateWords
+			= (grunt.i18nc.translateWords = {});
 
 		var errorArr = [];
 
@@ -54,7 +47,7 @@ module.exports = function(grunt)
 			var opts = grunt.util._.extend(options,
 					{
 						defaultFilekey: srcfile,
-						dbTranslateWords: translateTaskAllData,
+						dbTranslateWords: dbTranslateWords,
 					});
 
 			try {
