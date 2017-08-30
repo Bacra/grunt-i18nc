@@ -1,5 +1,12 @@
 var i18nc = require('i18nc');
 var extend = require('extend');
+var path = require('path');
+
+function toLinux(p)
+{
+	return p && path.normalize(p).replace(/\//g, '/');
+}
+
 
 module.exports = function(grunt)
 {
@@ -46,7 +53,7 @@ module.exports = function(grunt)
 			var content = grunt.file.read(srcfile);
 			var opts = grunt.util._.extend(options,
 					{
-						defaultFilekey: srcfile,
+						defaultFilekey: toLinux(srcfile),
 						dbTranslateWords: dbTranslateWords,
 					});
 
