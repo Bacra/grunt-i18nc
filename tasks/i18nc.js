@@ -4,7 +4,7 @@ var path = require('path');
 
 function toLinux(p)
 {
-	return p && path.normalize(p).replace(/\//g, '/');
+	return p && path.normalize(p).replace(/\\/g, '/');
 }
 
 
@@ -45,16 +45,17 @@ module.exports = function(grunt)
 
 		self.files.forEach(function(file)
 		{
-			var srcfile = file.src[0];
-			var destfile = file.dest;
+			var srcFile = file.src[0];
+			var destFile = file.dest;
 
-			if (!grunt.file.isFile(srcfile)) return;
+			if (!grunt.file.isFile(srcFile)) return;
 
-			var content = grunt.file.read(srcfile);
+			var content = grunt.file.read(srcFile);
 			var opts = grunt.util._.extend(options,
 					{
-						defaultFilekey: toLinux(srcfile),
-						dbTranslateWords: dbTranslateWords,
+						srcFile				: toLinux(path.resolve(file.orig.cwd, srcFile)),
+						defaultFilekey		: toLinux(path.relative(file.orig.cwd, srcFile)),
+						dbTranslateWords	: dbTranslateWords,
 					});
 
 			try {
@@ -64,17 +65,17 @@ module.exports = function(grunt)
 			{
 				if (options.isHoldError)
 				{
-					grunt.log.error('parse file error:'+srcfile+' err:'+err.message);
+					grunt.log.error('parse file error:'+srcFile+' err:'+err.message);
 					errorArr.push(
 						{
-							file: srcfile,
+							file: srcFile,
 							error: err
 						});
 					return;
 				}
 				else
 				{
-					grunt.log.error('Error File:'+srcfile);
+					grunt.log.error('Error File:'+srcFile);
 					throw err;
 				}
 			}
@@ -84,10 +85,10 @@ module.exports = function(grunt)
 				grunt.log.warn('Dirty words call I18N Function:\n  '+info.dirtyWords.join('  \n'));
 			}
 
-			grunt.file.write(destfile, info.code);
+			grunt.file.write(destFile, info.code);
 
 
-			translateWordsOutput[srcfile] =
+			translateWordsOutput[srcFile] =
 			{
 				funcTranslateWords	: info.funcTranslateWords,
 				codeTranslateWords	: info.codeTranslateWords,
