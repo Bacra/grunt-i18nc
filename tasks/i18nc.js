@@ -50,7 +50,7 @@ module.exports = function(grunt)
 
 			if (!grunt.file.isFile(srcFile)) return;
 
-			var content = grunt.file.read(srcFile);
+			var content = grunt.file.read(srcFile).toString();
 			var opts = grunt.util._.extend(options,
 					{
 						srcFile				: toLinux(path.resolve(file.orig.cwd, srcFile)),
@@ -85,7 +85,10 @@ module.exports = function(grunt)
 				grunt.log.warn('Dirty words call I18N Function:\n  '+info.dirtyWords.join('  \n'));
 			}
 
-			grunt.file.write(destFile, info.code);
+			if (content != info.code)
+			{
+				grunt.file.write(destFile, info.code);
+			}
 
 
 			translateWordsOutput[srcFile] =
