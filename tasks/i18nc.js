@@ -1,4 +1,4 @@
-var i18nc = require('i18nc');
+var i18nc = require('i18nc-core');
 var extend = require('extend');
 var path = require('path');
 
