@@ -90,11 +90,7 @@ module.exports = function(grunt)
 				grunt.log.warn('Dirty words call I18N Function:\n  '+info.dirtyWords.join('  \n'));
 			}
 
-			if (content != info.code)
-			{
-				grunt.file.write(destFile, info.code);
-			}
-
+			grunt.file.write(destFile, info.code);
 
 			translateWordsOutput[srcFile] =
 			{
