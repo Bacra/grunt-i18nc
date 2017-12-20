@@ -48,13 +48,18 @@ module.exports = function(grunt)
 			var srcFile = file.src[0];
 			var destFile = file.dest;
 
+			var fullCwd = path.resolve(process.cwd(), file.orig.cwd);
+			var fullSrcFile = path.resolve(process.cwd(), srcFile);
+
+			grunt.verbose.writeln('full cwd:'+fullCwd+' src:'+fullSrcFile);
+
 			if (!grunt.file.isFile(srcFile)) return;
 
 			var content = grunt.file.read(srcFile).toString();
 			var opts = grunt.util._.extend(options,
 					{
-						srcFile				: toLinux(path.resolve(file.orig.cwd, srcFile)),
-						defaultFilekey		: toLinux(path.relative(file.orig.cwd, srcFile)),
+						srcFile				: toLinux(path.resolve(fullCwd, fullSrcFile)),
+						defaultFilekey		: toLinux(path.relative(fullCwd, fullSrcFile)),
 						dbTranslateWords	: dbTranslateWords,
 					});
 
