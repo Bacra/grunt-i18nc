@@ -53,8 +53,8 @@ module.exports = function(grunt)
 			var content = grunt.file.read(srcFile).toString();
 			var opts = grunt.util._.extend(options,
 					{
+						cwd					: file.orig.cwd,
 						srcFile				: toLinux(path.resolve(file.orig.cwd, srcFile)),
-						defaultFilekey		: toLinux(path.relative(file.orig.cwd, srcFile)),
 						dbTranslateWords	: dbTranslateWords,
 					});
 
