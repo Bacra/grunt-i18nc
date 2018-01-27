@@ -48,6 +48,11 @@ module.exports = function(grunt)
 			var srcFile = file.src[0];
 			var destFile = file.dest;
 
+			var fullCwd = path.resolve(process.cwd(), file.orig.cwd);
+			var fullSrcFile = path.resolve(process.cwd(), srcFile);
+
+			grunt.verbose.writeln('full cwd:'+fullCwd+' src:'+fullSrcFile);
+
 			if (!grunt.file.isFile(srcFile)) return;
 
 			var content = grunt.file.read(srcFile).toString();
@@ -85,11 +90,7 @@ module.exports = function(grunt)
 				grunt.log.warn('Dirty words call I18N Function:\n  '+info.dirtyWords.join('  \n'));
 			}
 
-			if (content != info.code)
-			{
-				grunt.file.write(destFile, info.code);
-			}
-
+			grunt.file.write(destFile, info.code);
 
 			translateWordsOutput[srcFile] =
 			{
