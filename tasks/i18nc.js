@@ -17,23 +17,7 @@ module.exports = function(grunt)
 			{
 				isHoldError: true
 			});
-		var translateFile = options.translateFile;
-
-		var translateData = {};
-		var dbTranslateWords;
-		if (translateFile)
-		{
-			try {
-				dbTranslateWords = grunt.file.readJSON(translateFile);
-			}
-			catch(err)
-			{
-				grunt.file.copy(translateFile, translateFile+'.bak_'+self.target);
-				grunt.log.warn('read translateFile err: '.red + translateFile);
-			}
-		}
-
-		dbTranslateWords = extend(true, {}, options.translateData, dbTranslateWords);
+		var dbTranslateWords = options.dbTranslateWords;
 
 		if (!grunt.i18nc) grunt.i18nc = {};
 
@@ -94,6 +78,7 @@ module.exports = function(grunt)
 
 			translateWordsOutput[srcFile] =
 			{
+				currentFileKey		: info.currentFileKey,
 				funcTranslateWords	: info.funcTranslateWords,
 				codeTranslateWords	: info.codeTranslateWords,
 				usedTranslateWords	: info.usedTranslateWords,
@@ -109,11 +94,6 @@ module.exports = function(grunt)
 				grunt.log.error('File:'+item.file+'\n Error Message:'+item.error.message);
 			});
 			throw new Error('Some file Is Error');
-		}
-
-		if (options.translateOutputFile)
-		{
-			grunt.file.write(options.translateOutputFile, JSON.stringify(grunt.i18nc.translateWords, null, '\t'));
 		}
 	});
 };

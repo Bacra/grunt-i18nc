@@ -7,9 +7,7 @@ module.exports = function(grunt)
 			options:
 			{
 				isIgnoreScanWarn	: true,
-				translateData		: {},
-				translateFile		: 'files/translate_data.json',
-				translateOutputFile	: 'tmp/translate_output.json',
+				dbTranslateWords	: require('./files/translate_data.json'),
 			},
 			test:
 			{
@@ -19,9 +17,16 @@ module.exports = function(grunt)
 				filter: 'isFile',
 				expand: true
 			}
+		},
+		'i18nc-po':
+		{
+			all:
+			{
+				output: __dirname+'/tmp/'
+			}
 		}
 	});
 
 	grunt.loadTasks('../tasks');
-	grunt.registerTask('default', ['i18nc']);
+	grunt.registerTask('default', ['i18nc', 'i18nc-po']);
 };

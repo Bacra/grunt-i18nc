@@ -5,7 +5,8 @@
   "main": "tasks/i18nc.js",
   "dependencies": {
     "extend": "^3.0.1",
-    "i18nc-core": "^1.0.0"
+    "i18nc-core": "^1.0.0",
+    "i18nc-po": "0.0.3"
   },
   "devDependencies": {
     "grunt": "*"
