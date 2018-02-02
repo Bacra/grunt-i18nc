@@ -69,9 +69,9 @@ module.exports = function(grunt)
 				}
 			}
 
-			if (info.dirtyWords.length)
+			if (info.dirtyAsts.length)
 			{
-				grunt.log.warn('Dirty words call I18N Function:\n  '+info.dirtyWords.join('  \n'));
+				grunt.log.warn('Dirty words call I18N Function:\n  '+info.dirtyAsts.map(function(item){return item.code}).join('  \n'));
 			}
 
 			grunt.file.write(destFile, info.code);
