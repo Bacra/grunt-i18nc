@@ -1,4 +1,4 @@
-var i18nc = require('i18nc-core');
+var i18nc = require('i18nc');
 var extend = require('extend');
 var path = require('path');
 
@@ -15,19 +15,41 @@ module.exports = function(grunt)
 		var self = this;
 		var options = self.options(
 			{
+				poFilesInputDir: null,
 				isHoldError: true
 			});
-		var dbTranslateWords = options.dbTranslateWords;
+		var dbTranslateWords = options.dbTranslateWords || {};
 
+
+		if (options.poFilesInputDir)
+		{
+			var done = self.async();
+			i18nc.util.loadPOFiles(options.poFilesInputDir)
+				.then(function(data)
+				{
+					dbTranslateWords = extend(true, data, dbTranslateWords);
+					main(self.files, dbTranslateWords, options);
+					done();
+				})
+				.catch(done);
+		}
+		else
+		{
+			main(self.files, dbTranslateWords, options);
+		}
+	});
+
+
+	function main(files, dbTranslateWords, options)
+	{
 		if (!grunt.i18nc) grunt.i18nc = {};
-
 		var translateWordsOutput
 			= grunt.i18nc.translateWords
 			= (grunt.i18nc.translateWords = {});
 
 		var errorArr = [];
 
-		self.files.forEach(function(file)
+		files.forEach(function(file)
 		{
 			var srcFile = file.src[0];
 			var destFile = file.dest;
@@ -95,5 +117,5 @@ module.exports = function(grunt)
 			});
 			throw new Error('Some file Is Error');
 		}
-	});
+	}
 };

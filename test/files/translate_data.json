@@ -1,7 +1,7 @@
 {
     "en":
     {
-        "<allfile>":
+        "*":
         {
             "DEFAULTS":
             {
@@ -23,7 +23,7 @@
     },
     "tw":
     {
-        "<allfile>":
+        "*":
         {
             "DEFAULTS":
             {

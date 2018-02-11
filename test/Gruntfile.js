@@ -6,7 +6,6 @@ module.exports = function(grunt)
 		{
 			options:
 			{
-				isIgnoreScanWarn	: true,
 				dbTranslateWords	: require('./files/translate_data.json'),
 			},
 			test:
@@ -20,6 +19,10 @@ module.exports = function(grunt)
 		},
 		'i18nc-po':
 		{
+			options:
+			{
+				pickFileLanguages	: ['en-US', 'zh-TW']
+			},
 			all:
 			{
 				output: __dirname+'/tmp/'

@@ -1,4 +1,4 @@
-var i18ncPO = require('i18nc-po');
+var i18nc = require('i18nc');
 
 module.exports = function(grunt)
 {
@@ -11,12 +11,12 @@ module.exports = function(grunt)
 
 		if (!translateWords) return;
 
-		var output = i18ncPO.create({subScopeDatas: grunt.util._.values(translateWords)}, options);
-		grunt.file.write(outputDir+'/all.po', output.po);
-		grunt.util._.each(output.pot, function(content, file)
-		{
-			grunt.file.write(outputDir+'/'+file+'.pot', content);
-		});
-
+		var done = this.async();
+		i18nc.util.mulitResult2POFiles(translateWords, outputDir, options)
+			.then(function()
+			{
+				done();
+			},
+			done);
 	});
 };
