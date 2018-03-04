@@ -10,7 +10,7 @@ function toLinux(p)
 
 module.exports = function(grunt)
 {
-	grunt.registerMultiTask('i18nc', 'i18nc', function()
+	grunt.registerMultiTask('i18nc', 'Add I18N handler into JS files.', function()
 	{
 		var self = this;
 		var options = self.options(
@@ -62,7 +62,9 @@ module.exports = function(grunt)
 			var fullSrcFile = path.resolve(pcwd, srcFile);
 			var fullDestFile = path.resolve(pcwd, destFile);
 
-			grunt.verbose.writeln('full cwd:'+fullCwd+' src:'+fullSrcFile+' dest:'+fullDestFile);
+			grunt.verbose.writeln('full cwd:'+fullCwd
+				+' src:'+fullSrcFile
+				+' dest:'+fullDestFile);
 
 			var opts = grunt.util._.extend(options,
 					{
@@ -94,20 +96,15 @@ module.exports = function(grunt)
 				}
 			}
 
-			if (info.dirtyAsts.length)
+			if (info.dirtyWords.length)
 			{
-				grunt.log.warn('Dirty words call I18N Function:\n  '+info.dirtyAsts.map(function(item){return item.code}).join('  \n'));
+				grunt.log.warn('Dirty words call I18N Function:\n  '
+					+info.dirtyWords.toArray().join('  \n'));
 			}
 
 			grunt.file.write(destFile, info.code);
-
-			translateWordsOutput[srcFile] =
-			{
-				currentFileKey		: info.currentFileKey,
-				funcTranslateWords	: info.funcTranslateWords,
-				codeTranslateWords	: info.codeTranslateWords,
-				usedTranslateWords	: info.usedTranslateWords,
-			};
+			_removeResultCode(info);
+			translateWordsOutput[srcFile] = info;
 		});
 
 
@@ -122,3 +119,9 @@ module.exports = function(grunt)
 		}
 	}
 };
+
+function _removeResultCode(json)
+{
+	delete json.code;
+	json.subScopeDatas.forEach(_removeResultCode);
+}
