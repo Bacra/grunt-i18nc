@@ -2,7 +2,7 @@ var i18nc = require('i18nc');
 
 module.exports = function(grunt)
 {
-	grunt.registerMultiTask('i18nc-po', 'i18nc po', function()
+	grunt.registerMultiTask('i18nc-po', 'Create i18nc po files.', function()
 	{
 		var outputDir = this.data.output;
 		var options = this.options();
