@@ -23,13 +23,24 @@ module.exports = function(grunt)
 			{
 				pickFileLanguages	: ['en-US', 'zh-TW']
 			},
-			all:
+			test:
 			{
 				output: __dirname+'/tmp/'
 			}
-		}
+		},
+		'i18nc-check':
+		{
+			test:
+			{
+				src: '*.js',
+				cwd: 'files/',
+				dest: 'tmp/',
+				filter: 'isFile',
+				expand: true
+			}
+		},
 	});
 
 	grunt.loadTasks('../tasks');
-	grunt.registerTask('default', ['i18nc', 'i18nc-po']);
+	grunt.registerTask('default', ['i18nc', 'i18nc-po', 'i18nc-check']);
 };
