@@ -1,11 +1,14 @@
 {
   "name": "grunt-i18nc",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "grunt for i18nc",
   "main": "tasks/i18nc.js",
+  "scripts": {
+    "prepublish": "npm ls"
+  },
   "dependencies": {
     "extend": "^3.0.1",
-    "i18nc": "^2.5.1"
+    "i18nc": "^3.0.0"
   },
   "devDependencies": {
     "grunt": "^1.0.2"
