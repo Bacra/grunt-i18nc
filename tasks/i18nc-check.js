@@ -27,7 +27,7 @@ module.exports = function(grunt)
 					var ast = item.originalAst;
 					var localStr = 'Loc:'+ast.loc.start.line+','+ast.loc.start.column;
 					var wordsStr = item.translateWords.join(',');
-					grunt.log.writeln('       '+localStr.gray+'    '+wordsStr);
+					grunt.log.writeln('       '+(localStr.gray || localStr)+'    '+wordsStr);
 				});
 				isCheckFail = true;
 			}
