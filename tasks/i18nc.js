@@ -1,4 +1,5 @@
 var i18nc = require('i18nc');
+var cliPrinter = i18nc.util.cli;
 var extend = require('extend');
 var path = require('path');
 
@@ -99,8 +100,9 @@ module.exports = function(grunt)
 			var dirtyWords = info.allDirtyWords();
 			if (dirtyWords.list.length)
 			{
-				grunt.log.warn('Dirty words call I18N Function:\n  '
-					+info.dirtyWords.toArray().join('  \n'));
+				var output = cliPrinter.printDirtyWords(dirtyWords, 2);
+				grunt.log.writeln('  File DirtyWords: '+srcFile);
+				grunt.log.writeln(output);
 			}
 
 			grunt.file.write(destFile, info.code);
