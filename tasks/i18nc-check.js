@@ -1,4 +1,6 @@
 var i18nc = require('i18nc');
+var cliPrinter = i18nc.util.cli;
+cliPrinter.colors.enabled = false;
 
 module.exports = function(grunt)
 {
@@ -14,6 +16,7 @@ module.exports = function(grunt)
 			var content = grunt.file.read(srcFile).toString();
 			var json = i18nc(content, options);
 			var newlist = json.allCodeTranslateWords().list4newWordAsts();
+			var dirtyWords = json.allDirtyWords();
 
 			if (!newlist.length)
 			{
@@ -22,13 +25,23 @@ module.exports = function(grunt)
 			else
 			{
 				grunt.log.writeln('  '+'fail'.red+' '+srcFile);
-				newlist.forEach(function(item)
+				var output = '';
+				grunt.verbose.writeln('newlist:'+newlist.length+' dirtyWords:'+dirtyWords.list.length);
+
+				if (newlist.length)
 				{
-					var ast = item.originalAst;
-					var localStr = 'Loc:'+ast.loc.start.line+','+ast.loc.start.column;
-					var wordsStr = item.translateWords.join(',');
-					grunt.log.writeln('       '+(localStr.gray || localStr)+'    '+wordsStr);
-				});
+					output += cliPrinter.printNewWords(newlist, 7);
+				}
+				if (newlist.length && dirtyWords.list.length)
+				{
+					output += '       ===========================\n'
+				}
+				if (dirtyWords.list.length)
+				{
+					output += cliPrinter.printDirtyWords(dirtyWords, 7);
+				}
+
+				grunt.log.writeln(output);
 				isCheckFail = true;
 			}
 		});
