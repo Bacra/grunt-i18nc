@@ -96,7 +96,8 @@ module.exports = function(grunt)
 				}
 			}
 
-			if (info.dirtyWords.length)
+			var dirtyWords = info.allDirtyWords();
+			if (dirtyWords.list.length)
 			{
 				grunt.log.warn('Dirty words call I18N Function:\n  '
 					+info.dirtyWords.toArray().join('  \n'));
