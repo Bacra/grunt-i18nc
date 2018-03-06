@@ -48,7 +48,7 @@ module.exports = function(grunt)
 
 		var checkSucNumStr = ''+(this.files.length - checkFailNum);
 		var checkFailNumStr = ''+checkFailNum;
-		grunt.log.writeln('Check File Result, Suc: '+checkSucNumStr.green+ ',   Fail: '+checkFailNumStr.red);
+		grunt.log.writeln('Check File Result, Suc: '+checkSucNumStr.green+ ',  Fail: '+checkFailNumStr.red);
 
 		if (checkFailNum) throw new Error('Check Wrap Fail');
 	});

@@ -83,6 +83,7 @@ module.exports = function(grunt)
 				if (options.isHoldError)
 				{
 					grunt.log.error('parse file error:'+srcFile+' err:'+err.message);
+					grunt.verbose.error(err.stack);
 					errorArr.push(
 						{
 							file: srcFile,
