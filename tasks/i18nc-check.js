@@ -8,7 +8,7 @@ module.exports = function(grunt)
 	{
 		var self = this;
 		var options = self.options({});
-		var isCheckFail = false;
+		var checkFailNum = 0;
 
 		self.files.forEach(function(file)
 		{
@@ -42,10 +42,14 @@ module.exports = function(grunt)
 				}
 
 				grunt.log.writeln(output);
-				isCheckFail = true;
+				checkFailNum++;
 			}
 		});
 
-		if (isCheckFail) throw new Error('Check Wrap Fail');
+		var checkSucNumStr = ''+(this.files.length - checkFailNum);
+		var checkFailNumStr = ''+checkFailNum;
+		grunt.log.writeln('Check File Result, Suc: '+checkSucNumStr.green+ ',   Fail: '+checkFailNumStr.red);
+
+		if (checkFailNum) throw new Error('Check Wrap Fail');
 	});
 };
