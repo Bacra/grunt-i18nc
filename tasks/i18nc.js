@@ -119,8 +119,13 @@ module.exports = function(grunt)
 			{
 				grunt.log.error('File:'+item.file+'\n Error Message:'+item.error.message);
 			});
-			throw new Error('Some file Is Error');
 		}
+
+		var checkSucNumStr = ''+(files.length - errorArr.length);
+		var checkFailNumStr = ''+errorArr.length;
+		grunt.log.writeln('Check File Result, Suc: '+checkSucNumStr.green+ ',  Fail: '+checkFailNumStr.red);
+
+		if (errorArr.length) throw new Error('Some file Is Error');
 	}
 };
 
