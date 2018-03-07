@@ -25,21 +25,8 @@ module.exports = function(grunt)
 			else
 			{
 				grunt.log.writeln('  '+'fail'.red+' '+srcFile);
-				var output = '';
 				grunt.verbose.writeln('newlist:'+newlist.length+' dirtyWords:'+dirtyWords.list.length);
-
-				if (newlist.length)
-				{
-					output += cliPrinter.printNewWords(newlist, 7);
-				}
-				if (newlist.length && dirtyWords.list.length)
-				{
-					output += '       ===========================\n'
-				}
-				if (dirtyWords.list.length)
-				{
-					output += cliPrinter.printDirtyWords(dirtyWords, 7);
-				}
+				var output = cliPrinter.printDirtyAndNewWords(dirtyWords, newlist, 7);
 
 				grunt.log.writeln(output);
 				checkFailNum++;
