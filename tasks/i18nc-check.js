@@ -1,6 +1,6 @@
 var i18nc = require('i18nc');
 var cliPrinter = i18nc.util.cli;
-cliPrinter.colors.enabled = false;
+
 
 module.exports = function(grunt)
 {
