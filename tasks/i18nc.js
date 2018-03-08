@@ -123,7 +123,7 @@ module.exports = function(grunt)
 
 		var checkSucNumStr = ''+(files.length - errorArr.length);
 		var checkFailNumStr = ''+errorArr.length;
-		grunt.log.writeln('Check File Result, Suc: '+checkSucNumStr.green+ ',  Fail: '+checkFailNumStr.red);
+		grunt.log.writeln('Create File Result, Suc: '+checkSucNumStr.green+ ',  Fail: '+checkFailNumStr.red);
 
 		if (errorArr.length) throw new Error('Some file Is Error');
 	}
