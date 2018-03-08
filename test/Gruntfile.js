@@ -6,7 +6,7 @@ module.exports = function(grunt)
 		{
 			options:
 			{
-				dbTranslateWords	: require('./files/translate_data.json'),
+				dbTranslateWords: require('./files/translate_data.json'),
 			},
 			test:
 			{
@@ -21,7 +21,7 @@ module.exports = function(grunt)
 		{
 			options:
 			{
-				pickFileLanguages	: ['en-US', 'zh-TW']
+				pickFileLanguages: ['en-US', 'zh-TW']
 			},
 			test:
 			{

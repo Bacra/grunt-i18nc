@@ -11,7 +11,7 @@ function toLinux(p)
 
 module.exports = function(grunt)
 {
-	grunt.registerMultiTask('i18nc', 'Add I18N handler into JS files.', function()
+	grunt.registerMultiTask('i18nc', 'Wrap I18N handler for JS files.', function()
 	{
 		var self = this;
 		var options = self.options(
