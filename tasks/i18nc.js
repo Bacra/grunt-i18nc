@@ -67,7 +67,7 @@ module.exports = function(grunt)
 				+' src:'+fullSrcFile
 				+' dest:'+fullDestFile);
 
-			var opts = grunt.util._.extend(options,
+			var opts = grunt.util._.extend({}, options,
 					{
 						cwd					: fullCwd,
 						srcFile				: toLinux(path.resolve(fullCwd, fullSrcFile)),
