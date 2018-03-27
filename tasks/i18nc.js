@@ -61,17 +61,13 @@ module.exports = function(grunt)
 			var pcwd = process.cwd();
 			var fullCwd = path.resolve(pcwd, file.orig.cwd);
 			var fullSrcFile = path.resolve(pcwd, srcFile);
-			var fullDestFile = path.resolve(pcwd, destFile);
 
-			grunt.verbose.writeln('full cwd:'+fullCwd
-				+' src:'+fullSrcFile
-				+' dest:'+fullDestFile);
+			grunt.verbose.writeln('full cwd:'+fullCwd+' src:'+fullSrcFile);
 
 			var opts = grunt.util._.extend({}, options,
 					{
 						cwd					: fullCwd,
 						srcFile				: toLinux(path.resolve(fullCwd, fullSrcFile)),
-						destFile			: toLinux(path.resolve(fullCwd, fullDestFile)),
 						dbTranslateWords	: dbTranslateWords,
 					});
 
