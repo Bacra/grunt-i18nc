@@ -28,7 +28,7 @@ module.exports = function(grunt)
 			i18nc.util.loadPOFiles(options.poFilesInputDir)
 				.then(function(data)
 				{
-					dbTranslateWords = extend(true, data, dbTranslateWords);
+					dbTranslateWords = extend(true, {}, data, dbTranslateWords);
 					main(self.files, dbTranslateWords, options);
 					done();
 				})
