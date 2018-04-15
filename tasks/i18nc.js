@@ -45,8 +45,7 @@ module.exports = function(grunt)
 	{
 		if (!grunt.i18nc) grunt.i18nc = {};
 		var translateWordsOutput
-			= grunt.i18nc.translateWords
-			= (grunt.i18nc.translateWords = {});
+			= grunt.i18nc.translateWords || (grunt.i18nc.translateWords = {});
 
 		var errorArr = [];
 
