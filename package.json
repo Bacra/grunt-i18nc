@@ -1,13 +1,15 @@
 {
   "name": "grunt-i18nc",
-  "version": "1.6.2",
+  "version": "1.7.0",
   "description": "grunt for i18nc",
   "main": "tasks/i18nc.js",
   "scripts": {
     "prepublish": "npm ls"
   },
   "dependencies": {
+    "bluebird": "^3.5.1",
     "extend": "^3.0.1",
+    "grunt-legacy-log": "^1.0.1",
     "i18nc": "^3.2.0"
   },
   "devDependencies": {

@@ -1,13 +1,6 @@
-var i18nc = require('i18nc');
-var cliPrinter = i18nc.util.cli;
-var extend = require('extend');
-var path = require('path');
-
-function toLinux(p)
-{
-	return p && path.normalize(p).replace(/\\/g, '/');
-}
-
+var log = require('../lib/log');
+var i18ncTask = require('../lib/i18nc').hanlde;
+var Promise = require('bluebird');
 
 module.exports = function(grunt)
 {
@@ -19,113 +12,63 @@ module.exports = function(grunt)
 				poFilesInputDir: null,
 				isHoldError: true
 			});
-		var dbTranslateWords = options.dbTranslateWords || {};
-
-
-		if (options.poFilesInputDir)
-		{
-			var done = self.async();
-			i18nc.util.loadPOFiles(options.poFilesInputDir)
-				.then(function(data)
-				{
-					dbTranslateWords = extend(true, {}, data, dbTranslateWords);
-					main(self.files, dbTranslateWords, options);
-					done();
-				})
-				.catch(done);
-		}
-		else
-		{
-			main(self.files, dbTranslateWords, options);
-		}
-	});
-
-
-	function main(files, dbTranslateWords, options)
-	{
-		if (!grunt.i18nc) grunt.i18nc = {};
-		var translateWordsOutput
-			= grunt.i18nc.translateWords || (grunt.i18nc.translateWords = {});
-
+		var done = self.async();
 		var errorArr = [];
+		var files = self.files;
 
-		files.forEach(function(file)
+		return Promise.map(files, function(file)
 		{
 			var srcFile = file.src[0];
-			var destFile = file.dest;
-			if (!grunt.file.isFile(srcFile)) return;
-
 			var content = grunt.file.read(srcFile).toString();
-
-			var pcwd = process.cwd();
-			var fullCwd = path.resolve(pcwd, file.orig.cwd);
-			var fullSrcFile = path.resolve(pcwd, srcFile);
-
-			grunt.verbose.writeln('full cwd:'+fullCwd+' src:'+fullSrcFile);
-
-			var opts = grunt.util._.extend({}, options,
+			return i18ncTask(file.orig.cwd, srcFile, content, options)
+				.then(function(code)
+				{
+					grunt.file.write(file.dest, code);
+				})
+				.catch(function(err)
+				{
+					if (options.isHoldError)
 					{
-						cwd					: fullCwd,
-						srcFile				: toLinux(path.resolve(fullCwd, fullSrcFile)),
-						dbTranslateWords	: dbTranslateWords,
-					});
+						log.error('parse file error:%s err:%s', srcFile, err.message);
+						log.verbose.error(err.stack);
+						errorArr.push(
+							{
+								file: srcFile,
+								error: err
+							});
+					}
+					else
+					{
+						log.error('Error File:%s', srcFile);
+						throw err;
+					}
+				});
 
-			try {
-				var info = i18nc(content, opts);
-			}
-			catch(err)
-			{
-				if (options.isHoldError)
-				{
-					grunt.log.error('parse file error:'+srcFile+' err:'+err.message);
-					grunt.verbose.error(err.stack);
-					errorArr.push(
-						{
-							file: srcFile,
-							error: err
-						});
-					return;
-				}
-				else
-				{
-					grunt.log.error('Error File:'+srcFile);
-					throw err;
-				}
-			}
-
-			var dirtyWords = info.allDirtyWords();
-			if (dirtyWords.list.length)
-			{
-				var output = cliPrinter.printDirtyWords(dirtyWords, 2);
-				grunt.log.writeln('  File DirtyWords: '+srcFile);
-				grunt.log.writeln(output);
-			}
-
-			grunt.file.write(destFile, info.code);
-			_removeResultCode(info);
-			translateWordsOutput[srcFile] = info;
-		});
-
-
-		if (errorArr.length)
+		},
 		{
-			grunt.log.error('[Error File List]');
-			errorArr.forEach(function(item)
+			concurrency: 5
+		})
+		.then(function()
+		{
+			if (errorArr.length)
 			{
-				grunt.log.error('File:'+item.file+'\n Error Message:'+item.error.message);
-			});
-		}
+				log.error('[Error File List]');
+				errorArr.forEach(function(item)
+				{
+					log.error('File:%s\n Error Message:%s', item.file, item.error.message);
+				});
+			}
 
-		var checkSucNumStr = ''+(files.length - errorArr.length);
-		var checkFailNumStr = ''+errorArr.length;
-		grunt.log.writeln('Create File Result, Suc: '+checkSucNumStr.green+ ',  Fail: '+checkFailNumStr.red);
+			var checkSucNumStr = ''+(files.length - errorArr.length);
+			var checkFailNumStr = ''+errorArr.length;
+			log.writeln('Create File Result, Suc: %s,  Fail: %s',
+					checkSucNumStr.green,
+					checkFailNumStr[errorArr.length ? 'red' : 'green']
+				);
 
-		if (errorArr.length) throw new Error('Some file Is Error');
-	}
+			if (errorArr.length) throw new Error('Some file Is Error');
+		})
+		.then(done, done);
+	});
+
 };
-
-function _removeResultCode(json)
-{
-	delete json.code;
-	json.subScopeDatas.forEach(_removeResultCode);
-}
