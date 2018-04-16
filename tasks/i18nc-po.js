@@ -1,4 +1,5 @@
 var i18nc = require('i18nc');
+var i18ncTask = require('../lib/i18nc');
 
 module.exports = function(grunt)
 {
@@ -11,16 +12,14 @@ module.exports = function(grunt)
 			});
 
 		if (!outputDir) return;
-		var translateWords = grunt.i18nc && grunt.i18nc.translateWords;
-		if (!translateWords) return;
 
 		var done = this.async();
-		i18nc.util.mulitResult2POFiles(translateWords, outputDir, options)
+		i18nc.util.mulitResult2POFiles(i18ncTask.data, outputDir, options)
 			.then(function()
 			{
 				if (options.clearWordsAfterOutput)
 				{
-					grunt.i18nc.translateWords = {};
+					i18ncTask.data = {};
 				}
 				done();
 			},
