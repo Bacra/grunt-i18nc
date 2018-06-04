@@ -14,7 +14,7 @@ module.exports = function(grunt)
 		if (!outputDir) return;
 
 		var done = this.async();
-		i18nc.util.mulitResult2POFiles(i18ncTask.data, outputDir, options)
+		i18nc.util.file.mulitResult2POFiles(i18ncTask.data, outputDir, options)
 			.then(function()
 			{
 				if (options.clearWordsAfterOutput)
