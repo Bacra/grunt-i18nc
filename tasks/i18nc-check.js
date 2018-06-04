@@ -1,6 +1,4 @@
-var i18nc = require('i18nc');
-var cliPrinter = i18nc.util.cli;
-
+var check = require('../lib/check').handler;
 
 module.exports = function(grunt)
 {
@@ -14,28 +12,13 @@ module.exports = function(grunt)
 		{
 			var srcFile = file.src[0];
 			var content = grunt.file.read(srcFile).toString();
-			var json = i18nc(content, options);
-			var newlist = json.allCodeTranslateWords().list4newWordAsts();
-			var dirtyWords = json.allDirtyWords();
 
-			if (!newlist.length)
-			{
-				grunt.log.writeln('  '+'ok'.green+' '+srcFile);
-			}
-			else
-			{
-				grunt.log.writeln('  '+'fail'.red+' '+srcFile);
-				grunt.verbose.writeln('newlist:'+newlist.length+' dirtyWords:'+dirtyWords.list.length);
-				var output = cliPrinter.printDirtyAndNewWords(dirtyWords, newlist, 7);
-
-				grunt.log.writeln(output);
-				checkFailNum++;
-			}
+			if (check(srcFile, content, options) === false) checkFailNum++;
 		});
 
 		var checkSucNumStr = ''+(this.files.length - checkFailNum);
 		var checkFailNumStr = ''+checkFailNum;
-		grunt.log.writeln('Check File Result, Suc: '+checkSucNumStr.green+ ',  Fail: '+checkFailNumStr.red);
+		grunt.log.writeln('Check File Result, Suc: %s,  Fail: %s', checkSucNumStr.green, checkFailNumStr.red);
 
 		if (checkFailNum) throw new Error('Check Wrap Fail');
 	});
