@@ -1,3 +1,5 @@
+'use strict';
+
 var check = require('../lib/check').handler;
 
 module.exports = function(grunt)
