@@ -1,3 +1,5 @@
+'use strict';
+
 var log = require('../lib/log');
 var i18ncTask = require('../lib/i18nc').hanlde;
 var Promise = require('bluebird');

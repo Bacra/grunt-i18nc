@@ -1,3 +1,5 @@
+'use strict';
+
 var i18nc = require('i18nc');
 var i18ncTask = require('../lib/i18nc');
 
