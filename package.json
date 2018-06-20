@@ -4,15 +4,17 @@
   "description": "grunt for i18nc",
   "main": "tasks/i18nc.js",
   "scripts": {
-    "prepublish": "npm ls"
+    "prepublish": "npm ls",
+    "test-eslint": "eslint ."
   },
   "dependencies": {
     "bluebird": "^3.5.1",
     "extend": "^3.0.1",
     "grunt-legacy-log": "^1.0.2",
-    "i18nc": "^4.1.1"
+    "i18nc": "^4.5.0"
   },
   "devDependencies": {
+    "eslint": "^4.19.1",
     "grunt": "^1.0.3"
   },
   "repository": {
