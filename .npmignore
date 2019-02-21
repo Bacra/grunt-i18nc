@@ -1,14 +1,14 @@
-node_modules
-npm-debug.log
+karam.conf.js
 
-.gitignore
-.travis.yml
-.gitattributes
-.eslintrc
-.eslintignore
-.editorconfig
-.npmignore
-.tags*
+Gruntfile.js
+gulpfile.js
+webpack.conf.js
+
+.*
 
 test
+dist/test
+src/test
 coverage
+benchmark
+docs
