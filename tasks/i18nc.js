@@ -1,7 +1,7 @@
 'use strict';
 
 var log = require('../lib/log');
-var i18ncTask = require('../lib/i18nc').hanlder;
+var i18ncTask = require('../lib/i18nc').handler;
 var Promise = require('bluebird');
 
 module.exports = function(grunt)
