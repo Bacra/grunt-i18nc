@@ -8,14 +8,14 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "bluebird": "^3.5.1",
-    "extend": "^3.0.1",
-    "grunt-legacy-log": "^1.0.2",
-    "i18nc": "^4.5.0"
+    "bluebird": "^3.5.3",
+    "extend": "^3.0.2",
+    "grunt-legacy-log": "^2.0.0",
+    "i18nc": "^4.6.2"
   },
   "devDependencies": {
-    "eslint": "^5.0.0",
-    "eslint-config-brcjs": "^0.1.0",
+    "eslint": "^5.15.1",
+    "eslint-config-brcjs": "^0.2.0",
     "grunt": "^1.0.3"
   },
   "repository": {
