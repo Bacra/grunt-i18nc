@@ -10,7 +10,7 @@ module.exports = function(grunt)
 		var outputDir = this.data.output;
 		var options = this.options(
 			{
-				clearWordsAfterOutput: true
+				clearWordsAfterOutput: false
 			});
 
 		if (!outputDir) return;
